@@ -2,4 +2,5 @@
     <string name="app_name">Monofarbe</string>
     <string name="monofarbe_auto_mode">Monofarbe - Auto Mode</string>
     <string name="monofarbe_manually_mode">Monofarbe - Manually mode</string>
+    <string name="v_0_1">V 0.1</string>
 </resources>

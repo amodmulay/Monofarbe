@@ -22,8 +22,6 @@
             android:id="@+id/textViewAuto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/monofarbe_auto_mode"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -40,8 +38,6 @@
             android:id="@+id/textViewManual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/switchAuto"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
             android:singleLine="false"
             android:text="@string/monofarbe_manually_mode"
@@ -53,13 +49,12 @@
             android:id="@+id/switchManual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:checked="false"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewStatus"
-            android:layout_width="wrap_content"
+            android:layout_width="68dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -73,7 +68,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:text="V 0.1"
+        android:text="@string/v_0_1"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/accent_material_light"
         android:textStyle="bold" />
