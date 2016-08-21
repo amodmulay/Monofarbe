@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nanotasks.BackgroundWork;
@@ -30,32 +30,35 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     SharedPreferences.Editor editor;
     MaterialDialog progressDialog;
     TextView textViewStatus;
-    ToggleButton toggleMonochromeSwitch;
+    Switch toggleAutoSwitch;
+    Switch toggleManualSwitch;
 
     protected void onCreate(Bundle savedInstanceState) {
+        //standard code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0.0f);
         }
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         isSuAvailable = settings.getBoolean("isSuAvailable", false);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        toggleMonochromeSwitch = (ToggleButton) findViewById(R.id.toggleButtonAuto);
+        toggleAutoSwitch = (Switch) findViewById(R.id.switchAuto);
         textViewStatus = (TextView) findViewById(R.id.textViewAuto);
         isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
 
-        toggleMonochromeSwitch.setOnCheckedChangeListener(null);
+        toggleAutoSwitch.setOnCheckedChangeListener(null);
 
         if (isMonochromeEnabled) {
             textViewStatus.setText("Monochrome is active");
-            toggleMonochromeSwitch.setChecked(true);
+            toggleAutoSwitch.setChecked(true);
         } else {
             textViewStatus.setText("Monochrome is inactive");
-            toggleMonochromeSwitch.setChecked(false);
+            toggleAutoSwitch.setChecked(false);
         }
 
-        toggleMonochromeSwitch.setOnCheckedChangeListener(this);
+        toggleAutoSwitch.setOnCheckedChangeListener(this);
 
         if (!Utils.isSecureSettingsPermGranted(getApplicationContext())) {
             progressDialog = new MaterialDialog.Builder(this)
@@ -91,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
                     } else {
                         Log.i(TAG, "Root not available");
-                        toggleMonochromeSwitch.setChecked(false);
-                        toggleMonochromeSwitch.setEnabled(false);
+                        toggleAutoSwitch.setChecked(false);
+                        toggleAutoSwitch.setEnabled(false);
                         textViewStatus.setText("Monochrome is inactive");
                         Utils.showRootUnavailableDialog(MainActivity.this);
                     }

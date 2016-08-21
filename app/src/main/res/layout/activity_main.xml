@@ -30,8 +30,8 @@
             android:textColor="#656973"
             android:textSize="@dimen/abc_text_size_medium_material" />
 
-        <ToggleButton
-            android:id="@+id/toggleButtonAuto"
+        <Switch
+            android:id="@+id/switchAuto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false" />
@@ -56,6 +56,13 @@
             android:layout_centerHorizontal="true"
             android:checked="false"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
 
