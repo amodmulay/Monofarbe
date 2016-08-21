@@ -1,19 +1,17 @@
 package com.avm.mavdroid.mono;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nanotasks.BackgroundWork;
@@ -22,13 +20,9 @@ import com.nanotasks.Tasks;
 
 import eu.chainfire.libsuperuser.Shell;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-
-
-        implements CompoundButton.OnCheckedChangeListener {
-
-    public static final String TAG = "LowBatteryMonochrome";
+    public static final String TAG = "com.avm.mavdroid.mono";
     boolean isSuAvailable = false;
     boolean isSecureSettingsPermGranted = false;
     boolean isMonochromeEnabled = false;
@@ -36,7 +30,7 @@ public class MainActivity extends AppCompatActivity
     SharedPreferences.Editor editor;
     MaterialDialog progressDialog;
     TextView textViewStatus;
-    SwitchCompat toggleMonochromeSwitch;
+    ToggleButton toggleMonochromeSwitch;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +41,8 @@ public class MainActivity extends AppCompatActivity
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         isSuAvailable = settings.getBoolean("isSuAvailable", false);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        toggleMonochromeSwitch = (SwitchCompat) findViewById(R.id.switch1);
-        textViewStatus = (TextView) findViewById(R.id.textView2);
+        toggleMonochromeSwitch = (ToggleButton) findViewById(R.id.toggleButtonAuto);
+        textViewStatus = (TextView) findViewById(R.id.textViewAuto);
         isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
 
         toggleMonochromeSwitch.setOnCheckedChangeListener(null);
@@ -147,9 +141,6 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.action_monochrome_more_info:
                 Utils.showMoreInfoDialog(this);
-                break;
-            case R.id.action_donate_dev:
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/suyashsrijan")));
                 break;
             case R.id.action_reset_monochrome:
                 resetMonochrome();

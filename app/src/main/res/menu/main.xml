@@ -9,12 +9,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_donate_dev"
-        android:orderInCategory="100"
-        android:title="Donate"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_reset_monochrome"
         android:orderInCategory="100"
         android:title="Reset"

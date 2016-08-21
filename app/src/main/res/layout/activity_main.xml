@@ -11,39 +11,53 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="Android systems have an inbuilt option to turn the screen black and white &apos;Monochrome&apos;. This application turns this option on or off based on battery percentage or a manual switch"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#656973"
-        android:textSize="18sp" />
+        android:orientation="vertical">
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switch1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/monofarbe_auto_mode"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#656973"
+            android:textSize="@dimen/abc_text_size_medium_material" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp"
-        android:text="Monofarbe is inactive"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#656973"
-        android:textStyle="bold" />
+        <ToggleButton
+            android:id="@+id/toggleButtonAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
+
+        <TextView
+            android:id="@+id/textViewManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/switchAuto"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:singleLine="false"
+            android:text="@string/monofarbe_manually_mode"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#656973"
+            android:textSize="@dimen/abc_text_size_medium_material" />
+
+        <Switch
+            android:id="@+id/switchManual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:checked="false"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewVer"
@@ -51,28 +65,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="V 0,1"
+        android:layout_gravity="center_horizontal"
+        android:text="V 0.1"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff"
+        android:textColor="@color/accent_material_light"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Hi!"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffff"
-        android:textSize="70sp" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@+id/textView"
-        android:layout_alignEnd="@+id/switch1"></FrameLayout>
 
 </RelativeLayout>
