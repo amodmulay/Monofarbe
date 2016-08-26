@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         isSuAvailable = settings.getBoolean("isSuAvailable", false);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
         toggleAutoSwitch = (Switch) findViewById(R.id.switchAuto);
+        toggleManualSwitch = (Switch) findViewById(R.id.switchManual);
+
         textViewStatus = (TextView) findViewById(R.id.textViewAuto);
         isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
 
