@@ -18,7 +18,7 @@ public class ChargerDisconnected extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
+        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
         if (isSecureSettingsPermGranted) {
             if (isMonochromeEnabled) {
                 if (Utils.getBatteryLevel(context) > Utils.getLowBatteryLevel()) {

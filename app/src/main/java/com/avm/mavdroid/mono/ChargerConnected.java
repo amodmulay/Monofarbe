@@ -18,7 +18,7 @@ public class ChargerConnected extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
+        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
         if (isSecureSettingsPermGranted) {
             if (isMonochromeEnabled) {
                 Log.i(TAG, "POWER_CONNECTED broadcast received, disabling monochrome mode");

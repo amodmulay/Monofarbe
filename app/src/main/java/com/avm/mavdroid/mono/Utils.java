@@ -20,12 +20,10 @@ import eu.chainfire.libsuperuser.Shell;
 
 public class Utils {
 
-    public static final String TAG = "LowBatteryMonochrome";
+    public static final String TAG = "com.avm.mavdroid.mono";
 
     public static boolean isSecureSettingsPermGranted(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED)
-            return true;
-        else return false;
+        return context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED;
     }
 
     public static int getLowBatteryLevel() {
@@ -159,7 +157,7 @@ public class Utils {
     public static void showMonochromeActiveDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("That's it");
-        builder.setMessage("Monochrome is now enabled and will automatically activate when your battery becomes low");
+        builder.setMessage("Monofarb is now enabled and will automatically activate when your battery becomes low");
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -171,14 +169,15 @@ public class Utils {
 
     public static void showMoreInfoDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("More info");
-        builder.setMessage("Monochrome turns on monochrome (or black & white) mode when your battery is low, to reduce display power consumption. " +
-                "\n\nMonochrome is triggered when your device's battery level hits the LOW level as defined by the OEM (usually 15%) and Monochrome is triggered again when " +
-                "your battery level hits the OKAY level (usually 30%) as defined by the OEM. When your battery level reaches the LOW state, Monochrome is turned on and " +
-                "when your battery level reaches the OKAY state, Monochrome is turned off. This is all done automatically so you don't have to manage anything. " +
-                "\n\nMonochrome also works on the GPU level, so Monochrome does not implement a hidden/invisible view on top of apps to enforce black and white colors. " +
-                "This means Monochrome does not run in the background and/or constantly monitor your battery level, it's only activated when your battery reaches LOW " +
-                "and OKAY states and after enabling/disabling B/W mode on the GPU level, Monochrome exits."
+        builder.setTitle("More info: Fork from Suyash Srijan's monochrome application");
+        builder.setMessage("Black & White mode is turned on when the battery hits LOW level. " +
+                "\n\nThe LOW level is defined by the OEM (usually 15%)." +
+                "This mode is disabled when the battery reaches the OKAY level (usually 30%) as defined by the OEM." +
+                "This application works on system battery intent and does not poll the battery status continuously. " +
+                "Hence it does not consume battery." +
+                "\n\n Phones with LCD screens will not see any advantage as LDC screens consume same amount of power " +
+                "at full color or black and white. So this mode is more of fun!" +
+                "\n\n Phones with AMOLED screens will save some juice as AMOLED displays switch of pixels for deep blacks"
         );
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override

@@ -1,3 +1,10 @@
+/**
+ * Many thanks to https://github.com/theblixguy for the opensource code
+ * http://www.suyashsrijan.com/
+ * <p/>
+ * I have made modifications to the code and added functionality as I wanted it.
+ * My source shall always be open source for this application
+ */
 package com.avm.mavdroid.mono;
 
 import android.content.Context;
@@ -10,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -25,52 +31,55 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static final String TAG = "com.avm.mavdroid.mono";
     boolean isSuAvailable = false;
     boolean isSecureSettingsPermGranted = false;
-    boolean isMonochromeEnabled = false;
+    boolean isMonochromeEnabledAuto = false;
+    boolean isMonochromeEnabledManual = false;
     SharedPreferences settings;
     SharedPreferences.Editor editor;
     MaterialDialog progressDialog;
-    TextView textViewStatus;
     Switch toggleAutoSwitch;
     Switch toggleManualSwitch;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        //standard code
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setElevation(0.0f);
-        }
+    private void initSettings() {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         isSuAvailable = settings.getBoolean("isSuAvailable", false);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
         toggleAutoSwitch = (Switch) findViewById(R.id.switchAuto);
         toggleManualSwitch = (Switch) findViewById(R.id.switchManual);
+        isMonochromeEnabledAuto = settings.getBoolean("isMonochromeEnabledAuto", false);
+        isMonochromeEnabledManual = settings.getBoolean("isMonochromeEnabledManual", false);
+    }
 
-        textViewStatus = (TextView) findViewById(R.id.textViewAuto);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
-
-        toggleAutoSwitch.setOnCheckedChangeListener(null);
-
-        if (isMonochromeEnabled) {
-            textViewStatus.setText("Monochrome is active");
-            toggleAutoSwitch.setChecked(true);
-        } else {
-            textViewStatus.setText("Monochrome is inactive");
-            toggleAutoSwitch.setChecked(false);
+    private void setCurrentState() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setElevation(0.0f);
         }
 
+        if (isMonochromeEnabledAuto) {
+            toggleAutoSwitch.setChecked(true);
+        } else {
+            toggleAutoSwitch.setChecked(false);
+        }
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        //standard code
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initSettings();
+        setCurrentState();
+        //register change listener for button action
         toggleAutoSwitch.setOnCheckedChangeListener(this);
+        toggleManualSwitch.setOnCheckedChangeListener(this);
 
         if (!Utils.isSecureSettingsPermGranted(getApplicationContext())) {
             progressDialog = new MaterialDialog.Builder(this)
                     .title("Please wait")
                     .autoDismiss(false)
                     .cancelable(false)
-                    .content("Requesting SU access...")
+                    .content("Requesting Super User access")
                     .progress(true, 0)
                     .show();
-            Log.i(TAG, "Check if SU is available, and request SU permission if it is");
+            Log.i(TAG, "Request Super User permission if Super User is available");
 
             Tasks.executeInBackground(MainActivity.this, new BackgroundWork<Boolean>() {
                 @Override
@@ -86,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     isSuAvailable = result;
                     Log.i(TAG, "SU available: " + Boolean.toString(result));
                     if (isSuAvailable) {
-                        Log.i(TAG, "Granting android.permission.WRITE_SECURE_SETTINGS to com.avm.mavdroid.mono");
+                        Log.i(TAG, "android.permission.WRITE_SECURE_SETTINGS to com.avm.mavdroid.mono....");
                         Utils.executeCommand("pm grant com.avm.mavdroid.mono android.permission.WRITE_SECURE_SETTINGS", isSuAvailable);
                         editor = settings.edit();
                         editor.putBoolean("isSuAvailable", true);
@@ -95,10 +104,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         editor.apply();
 
                     } else {
-                        Log.i(TAG, "Root not available");
+                        Log.i(TAG, "Root access not available");
                         toggleAutoSwitch.setChecked(false);
                         toggleAutoSwitch.setEnabled(false);
-                        textViewStatus.setText("Monochrome is inactive");
+                        toggleManualSwitch.setChecked(false);
+                        toggleManualSwitch.setEnabled(false);
                         Utils.showRootUnavailableDialog(MainActivity.this);
                     }
                 }
@@ -159,15 +169,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         if (b) {
             editor = settings.edit();
-            editor.putBoolean("isMonochromeEnabled", true);
+            editor.putBoolean("isMonochromeEnabledAuto", true);
             editor.apply();
-            textViewStatus.setText("Monochrome is active");
             Utils.showMonochromeActiveDialog(MainActivity.this);
         } else {
             editor = settings.edit();
-            editor.putBoolean("isMonochromeEnabled", false);
+            editor.putBoolean("isMonochromeEnabledAuto", false);
             editor.apply();
-            textViewStatus.setText("Monochrome is inactive");
         }
     }
 }

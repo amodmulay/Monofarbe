@@ -22,7 +22,7 @@ public class BatteryOkay extends BroadcastReceiver {
         Log.i(TAG, "OKAY battery broadcast received, disabling monochrome mode");
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
+        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
         if (isSecureSettingsPermGranted) {
             if (isMonochromeEnabled) {
                 Utils.toggleMonochrome(0, context.getContentResolver());

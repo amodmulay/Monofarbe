@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class BatteryLow extends BroadcastReceiver {
 
-    public static final String TAG = "LowBatteryMonochrome";
+    public static final String TAG = "LowBatteryMonofarbe";
     boolean isSecureSettingsPermGranted = false;
     boolean isMonochromeEnabled = false;
     SharedPreferences settings;
@@ -22,7 +22,7 @@ public class BatteryLow extends BroadcastReceiver {
         Log.i(TAG, "LOW battery broadcast received, enabling monochrome mode");
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabled", false);
+        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
         if (isSecureSettingsPermGranted) {
             if (isMonochromeEnabled) {
                 Utils.toggleMonochrome(1, context.getContentResolver());
