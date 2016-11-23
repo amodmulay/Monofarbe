@@ -18,15 +18,15 @@ import java.util.List;
 
 import eu.chainfire.libsuperuser.Shell;
 
-public class Utils {
+class Utils {
 
-    public static final String TAG = "com.avm.mavdroid.mono";
+    private static final String TAG = "com.avm.mavdroid.mono";
 
-    public static boolean isSecureSettingsPermGranted(Context context) {
+    static boolean isSecureSettingsPermGranted(Context context) {
         return context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static int getLowBatteryLevel() {
+    static int getLowBatteryLevel() {
         int level;
         try {
             level = Resources.getSystem().getInteger(Resources.getSystem().getIdentifier("config_lowBatteryWarningLevel", "int", "android"));
@@ -36,7 +36,7 @@ public class Utils {
         return (level >= 15 ? level : 0);
     }
 
-    public static int getBatteryLevel(Context context) {
+    static int getBatteryLevel(Context context) {
 
         final Intent batteryIntent = context
                 .registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -57,7 +57,7 @@ public class Utils {
 
     }
 
-    public static void executeCommand(final String command, boolean isSuAvailable) {
+    static void executeCommand(final String command, boolean isSuAvailable) {
         if (isSuAvailable) {
             AsyncTask.execute(new Runnable() {
                 @Override
@@ -85,7 +85,7 @@ public class Utils {
         }
     }
 
-    public static void printShellOutput(List<String> output) {
+    private static void printShellOutput(List<String> output) {
         if (!output.isEmpty()) {
             for (String s : output) {
                 Log.i(TAG, s);
@@ -93,7 +93,7 @@ public class Utils {
         }
     }
 
-    public static void toggleMonochrome(int value, ContentResolver contentResolver) {
+    static void toggleGreyScale(int value, ContentResolver contentResolver) {
         Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer_enabled", value);
         if (value == 0) {
             Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer", -1);
@@ -102,18 +102,19 @@ public class Utils {
         }
     }
 
-    public static void resetMonochrome(ContentResolver contentResolver) {
+    static void resetGreyScale(ContentResolver contentResolver) {
         Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer_enabled", 0);
         Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer", -1);
     }
 
-    public static void showRootWorkaroundInstructions(final Context context) {
+    private static void showRootWorkaroundInstructions(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("No-root workaround");
         builder.setMessage("If your device isn't rooted, you can manually grant the permission 'android.permission.WRITE_SECURE_SETTINGS' " +
                 "to this app by executing the following ADB command from your PC (the command is one-line, not separated):\n\n" +
                 "\"adb -d shell pm grant com.avm.mavdroid.mono android.permission.WRITE_SECURE_SETTINGS\"\n\n" +
-                "Once you have done, please close this app and start again and you will then be able to access the app properly.");
+                "Once you have done, please close this app and start again and you will then be able to access the app properly.\n\n" +
+                "IMPORTANT: If your are in GreyScale mode and you uninstall the application you will not be able to switch back to color more.");
         builder.setPositiveButton("Okay", null);
         builder.setNegativeButton("Share command", new DialogInterface.OnClickListener() {
             @Override
@@ -130,7 +131,7 @@ public class Utils {
         builder.show();
     }
 
-    public static void showPermNotGrantedDialog(final Context context) {
+    static void showPermNotGrantedDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Error");
         builder.setMessage("android.permission.WRITE_SECURE_SETTINGS not granted");
@@ -138,7 +139,7 @@ public class Utils {
         builder.show();
     }
 
-    public static void showRootUnavailableDialog(final Context context) {
+    static void showRootUnavailableDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         builder.setTitle("Error");
         builder.setMessage("SU permission denied or not available! If you don't have root, " +
@@ -154,11 +155,11 @@ public class Utils {
         builder.show();
     }
 
-    public static void showMonochromeActiveDialog(final Context context) {
+    static void showGreyScaleActiveDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("That's it");
-        builder.setMessage("Monofarb is now enabled and will automatically activate when your battery becomes low");
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        builder.setTitle("Active");
+        builder.setMessage("Grey Scale is now enabled and will automatically activate when your battery becomes low");
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -167,19 +168,19 @@ public class Utils {
         builder.show();
     }
 
-    public static void showMoreInfoDialog(Context context) {
+    static void showMoreInfoDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("More info: Fork from Suyash Srijan's monochrome application");
-        builder.setMessage("Black & White mode is turned on when the battery hits LOW level. " +
-                "\n\nThe LOW level is defined by the OEM (usually 15%)." +
+        builder.setTitle("Mavdroid application");
+        builder.setMessage("Grey Scale mode is turned on when the battery hits 'LOW' level. " +
+                "\n\nThe 'LOW' level is defined by the OEM (usually 15%)." +
                 "This mode is disabled when the battery reaches the OKAY level (usually 30%) as defined by the OEM." +
                 "This application works on system battery intent and does not poll the battery status continuously. " +
                 "Hence it does not consume battery." +
-                "\n\n Phones with LCD screens will not see any advantage as LDC screens consume same amount of power " +
+                "\n\nPhones with LCD screens will not see any advantage as LDC screens consume same amount of power " +
                 "at full color or black and white. So this mode is more of fun!" +
-                "\n\n Phones with AMOLED screens will save some juice as AMOLED displays switch of pixels for deep blacks"
+                "\n\nPhones with AMOLED screens will save some juice as AMOLED displays switch of pixels for deep blacks"
         );
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

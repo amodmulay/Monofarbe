@@ -9,22 +9,22 @@ import android.util.Log;
 
 public class ChargerConnected extends BroadcastReceiver {
 
-    public static final String TAG = "LowBatteryMonochrome";
+    public static final String TAG = "LowBatteryMavdroid";
     boolean isSecureSettingsPermGranted = false;
-    boolean isMonochromeEnabled = false;
+    boolean isGreyScaleEnabled = false;
     SharedPreferences settings;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
+        isGreyScaleEnabled = settings.getBoolean(MainActivity.GS_AUTO, false);
         if (isSecureSettingsPermGranted) {
-            if (isMonochromeEnabled) {
-                Log.i(TAG, "POWER_CONNECTED broadcast received, disabling monochrome mode");
-                Utils.toggleMonochrome(0, context.getContentResolver());
+            if (isGreyScaleEnabled) {
+                Log.i(TAG, "POWER_CONNECTED broadcast received, disabling Grey Scale mode");
+                Utils.toggleGreyScale(0, context.getContentResolver());
             } else {
-                Log.i(TAG, "POWER_CONNECTED broadcast received, but Monochrome is not enabled, so skipping");
+                Log.i(TAG, "POWER_CONNECTED broadcast received, but Grey Scale is not enabled, so skipping");
             }
         } else {
             Log.i(TAG, "POWER_CONNECTED broadcast received, but WRITE_SECURE_SETTINGS permission not granted, so skipping");

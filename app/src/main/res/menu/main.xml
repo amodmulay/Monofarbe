@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_monochrome_more_info"
+        android:id="@+id/action_grey_scale_more_info"
         android:icon="@drawable/ic_info_outline_white_24dp"
         android:orderInCategory="100"
-        android:title="More info"
-        app:showAsAction="always" />
+        android:title="@string/more_info"
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_reset_monochrome"
+        android:id="@+id/action_reset_grey_scale"
         android:orderInCategory="100"
-        android:title="Reset"
+        android:title="@string/reset"
         app:showAsAction="never" />
 </menu>

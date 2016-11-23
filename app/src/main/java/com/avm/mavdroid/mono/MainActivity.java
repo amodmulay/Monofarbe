@@ -29,15 +29,18 @@ import eu.chainfire.libsuperuser.Shell;
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     public static final String TAG = "com.avm.mavdroid.mono";
+    public static final String GS_AUTO = "isGreyScaleEnabledAuto";
+    public static final String GS_MANUAL = "isGreyScaleEnabledManual";
+
     boolean isSuAvailable = false;
-    boolean isSecureSettingsPermGranted = false;
-    boolean isMonochromeEnabledAuto = false;
-    boolean isMonochromeEnabledManual = false;
-    SharedPreferences settings;
-    SharedPreferences.Editor editor;
-    MaterialDialog progressDialog;
-    Switch toggleAutoSwitch;
-    Switch toggleManualSwitch;
+    private boolean isSecureSettingsPermGranted = false;
+    private boolean isGreyScaleEnabledAuto = false;
+    private boolean isGreyScaleEnabledManual = false;
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+    private MaterialDialog progressDialog;
+    private Switch toggleAutoSwitch;
+    private Switch toggleManualSwitch;
 
     private void initSettings() {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -45,19 +48,26 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
         toggleAutoSwitch = (Switch) findViewById(R.id.switchAuto);
         toggleManualSwitch = (Switch) findViewById(R.id.switchManual);
-        isMonochromeEnabledAuto = settings.getBoolean("isMonochromeEnabledAuto", false);
-        isMonochromeEnabledManual = settings.getBoolean("isMonochromeEnabledManual", false);
+
     }
 
-    private void setCurrentState() {
+    private void setComponentState() {
+        isGreyScaleEnabledAuto = settings.getBoolean(GS_AUTO, false);
+        isGreyScaleEnabledManual = settings.getBoolean(GS_MANUAL, false);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0.0f);
         }
 
-        if (isMonochromeEnabledAuto) {
+        if (isGreyScaleEnabledAuto) {
             toggleAutoSwitch.setChecked(true);
         } else {
             toggleAutoSwitch.setChecked(false);
+        }
+
+        if (isGreyScaleEnabledManual) {
+            toggleManualSwitch.setChecked(true);
+        } else {
+            toggleManualSwitch.setChecked(false);
         }
     }
 
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSettings();
-        setCurrentState();
+        setComponentState();
         //register change listener for button action
         toggleAutoSwitch.setOnCheckedChangeListener(this);
         toggleManualSwitch.setOnCheckedChangeListener(this);
@@ -105,10 +115,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
                     } else {
                         Log.i(TAG, "Root access not available");
-                        toggleAutoSwitch.setChecked(false);
-                        toggleAutoSwitch.setEnabled(false);
-                        toggleManualSwitch.setChecked(false);
-                        toggleManualSwitch.setEnabled(false);
+
                         Utils.showRootUnavailableDialog(MainActivity.this);
                     }
                 }
@@ -131,12 +138,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         Log.i(TAG, "WRITE_SECURE_SETTINGS granted: " + Boolean.toString(isSecureSettingsPermGranted));
     }
 
-    public void resetMonochrome() {
+    public void resetGreyScale() {
         if (Utils.isSecureSettingsPermGranted(getApplicationContext())) {
-            Utils.resetMonochrome(getContentResolver());
+            Utils.resetGreyScale(getContentResolver());
         } else {
             Utils.showPermNotGrantedDialog(this);
         }
+        setBooleanValueInSharedPreferences(GS_AUTO, false);
+        setBooleanValueInSharedPreferences(GS_MANUAL, false);
+        setComponentState();
     }
 
     @Override
@@ -154,11 +164,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_monochrome_more_info:
+            case R.id.action_grey_scale_more_info:
                 Utils.showMoreInfoDialog(this);
                 break;
-            case R.id.action_reset_monochrome:
-                resetMonochrome();
+            case R.id.action_reset_grey_scale:
+                resetGreyScale();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -167,15 +177,30 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-        if (b) {
-            editor = settings.edit();
-            editor.putBoolean("isMonochromeEnabledAuto", true);
-            editor.apply();
-            Utils.showMonochromeActiveDialog(MainActivity.this);
-        } else {
-            editor = settings.edit();
-            editor.putBoolean("isMonochromeEnabledAuto", false);
-            editor.apply();
+        if (compoundButton.getId() == R.id.switchAuto) {
+            if (b) {
+                setBooleanValueInSharedPreferences(GS_AUTO, false);
+                Utils.showGreyScaleActiveDialog(MainActivity.this);
+            } else {
+                setBooleanValueInSharedPreferences(GS_AUTO, false);
+            }
         }
+
+        if (compoundButton.getId() == R.id.switchManual) {
+            if (b) {
+                setBooleanValueInSharedPreferences(GS_MANUAL, true);
+                Utils.toggleGreyScale(1, getApplicationContext().getContentResolver());
+            } else {
+                setBooleanValueInSharedPreferences(GS_MANUAL, false);
+                Utils.toggleGreyScale(0, getApplicationContext().getContentResolver());
+            }
+
+        }
+    }
+
+    private void setBooleanValueInSharedPreferences(final String identifier, final boolean bool) {
+        editor = settings.edit();
+        editor.putBoolean(identifier, bool);
+        editor.apply();
     }
 }

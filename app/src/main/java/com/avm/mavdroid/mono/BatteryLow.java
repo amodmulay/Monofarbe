@@ -9,9 +9,9 @@ import android.util.Log;
 
 public class BatteryLow extends BroadcastReceiver {
 
-    public static final String TAG = "LowBatteryMonofarbe";
+    public static final String TAG = "LowBatteryMavdroid";
     boolean isSecureSettingsPermGranted = false;
-    boolean isMonochromeEnabled = false;
+    boolean isGreyScaleEnabled = false;
     SharedPreferences settings;
 
     public BatteryLow() {
@@ -19,15 +19,15 @@ public class BatteryLow extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "LOW battery broadcast received, enabling monochrome mode");
+        Log.i(TAG, "LOW battery broadcast received, enabling Grey Scale mode");
         settings = PreferenceManager.getDefaultSharedPreferences(context);
         isSecureSettingsPermGranted = settings.getBoolean("isSecureSettingsPermGranted", false);
-        isMonochromeEnabled = settings.getBoolean("isMonochromeEnabledAuto", false);
+        isGreyScaleEnabled = settings.getBoolean(MainActivity.GS_AUTO, false);
         if (isSecureSettingsPermGranted) {
-            if (isMonochromeEnabled) {
-                Utils.toggleMonochrome(1, context.getContentResolver());
+            if (isGreyScaleEnabled) {
+                Utils.toggleGreyScale(1, context.getContentResolver());
             } else {
-                Log.i(TAG, "LOW battery broadcast received, but Monochrome is not enabled, so skipping");
+                Log.i(TAG, "LOW battery broadcast received, but Grey Scale is not enabled, so skipping");
             }
         } else {
             Log.i(TAG, "LOW battery broadcast received, but WRITE_SECURE_SETTINGS permission not granted, so skipping");
