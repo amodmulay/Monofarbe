@@ -1,9 +1,8 @@
 /**
- * Many thanks to https://github.com/theblixguy for the opensource code
+ * Code based on https://github.com/theblixguy
  * http://www.suyashsrijan.com/
  * <p/>
  * I have made modifications to the code and added functionality as I wanted it.
- * My source shall always be open source for this application
  */
 package com.avm.mavdroid.mono;
 
@@ -170,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             case R.id.action_reset_grey_scale:
                 resetGreyScale();
                 break;
+            case R.id.action_credits:
+                Utils.showCredits(this);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         if (compoundButton.getId() == R.id.switchAuto) {
             if (b) {
-                setBooleanValueInSharedPreferences(GS_AUTO, false);
+                setBooleanValueInSharedPreferences(GS_AUTO, true);
                 Utils.showGreyScaleActiveDialog(MainActivity.this);
             } else {
                 setBooleanValueInSharedPreferences(GS_AUTO, false);

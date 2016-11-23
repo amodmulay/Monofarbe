@@ -13,4 +13,9 @@
         android:orderInCategory="100"
         android:title="@string/reset"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_credits"
+        android:orderInCategory="100"
+        android:title="@string/credits"
+        app:showAsAction="never" />
 </menu>

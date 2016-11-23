@@ -157,9 +157,9 @@ class Utils {
 
     static void showGreyScaleActiveDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Active");
-        builder.setMessage("Grey Scale is now enabled and will automatically activate when your battery becomes low");
-        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+        builder.setTitle("Droid Mode Active!");
+        builder.setMessage("Auto Switching of Grey Scale is active.\nThe system will switch to Grey Scale at OEM set battery level (usually 15%)");
+        builder.setPositiveButton("Genau!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -170,8 +170,8 @@ class Utils {
 
     static void showMoreInfoDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Mavdroid application");
-        builder.setMessage("Grey Scale mode is turned on when the battery hits 'LOW' level. " +
+        builder.setTitle("Technical mambo jumbo");
+        builder.setMessage("System switches to Grey Scale when the battery hits 'LOW' level. " +
                 "\n\nThe 'LOW' level is defined by the OEM (usually 15%)." +
                 "This mode is disabled when the battery reaches the OKAY level (usually 30%) as defined by the OEM." +
                 "This application works on system battery intent and does not poll the battery status continuously. " +
@@ -180,7 +180,7 @@ class Utils {
                 "at full color or black and white. So this mode is more of fun!" +
                 "\n\nPhones with AMOLED screens will save some juice as AMOLED displays switch of pixels for deep blacks"
         );
-        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Genau!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -189,4 +189,17 @@ class Utils {
         builder.show();
     }
 
+    static void showCredits(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Credits");
+        builder.setMessage(" * Code based on https://github.com/theblixguy \n" +
+                "* I have made modifications to the code and added functionality as I want it.");
+        builder.setPositiveButton("Genau!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
 }
